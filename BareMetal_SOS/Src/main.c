@@ -13,13 +13,14 @@ int main(void){
 		// To see if the button is pressed block the process in a do while loop
 		do {
 			GPIOA->ODR &= ~(1<<5); // turns off LED
-		} while (GPIOC->IDR & (1 << 13));
+		} while (GPIOC->IDR & (1 << 13)); // since the button is pull-up it will briefly go to 0 when pressed
 		do {
 			SosSignal();
 		} while(GPIOC->IDR & (1 << 13));
 	}
 }
 
+// Initializes peripherals
 void GPIO_init(void){
 	//Enable Clock Peripherals (GPIOA, GPIOC)
 	RCC->AHB1ENR |= (1<<0); //Enables GPIOA peripheral (bit 0)
@@ -27,19 +28,19 @@ void GPIO_init(void){
 
 	delay(1); 	// allow time for clock to start
 
-	/// GPIOA
+	/// LED
     	//Set GPIOA, PIN 5 as Output (MODER[11:10] = 01)
 	GPIOA->MODER &= ~(1<<11); // clear bit 11
 	GPIOA->MODER |= (1<<10);  // set bit 10
-
-	// LED
 	GPIOA->OTYPER &= ~(1<<5); //Sets GPIOA, PIN 5 as push-pull
-	GPIOA->ODR |= (1<<5); //Initializes GPIOA, PIN 5 as HIGH
 
 	/// Button
 	//Set GPIOC, PIN 13 as Input (MODER[27:26] = 00)
 	GPIOC->MODER &= ~(1<<27); // clear bit 27
 	GPIOC->MODER &= ~(1<<26); // clear bit 26
+	//Set GPIOC, PIN 13 as Pull-up (negative logic) (PUPDR[27:26] = 01)
+	GPIOA->PUPDR &= ~(1<<27); // clear bit 27
+	GPIOA->PUPDR |= (1<<26); // set bit 26
 }
 
 // Pressing the button starts SOS (Green LED flashes SOS).
