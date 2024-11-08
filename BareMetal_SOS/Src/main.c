@@ -28,7 +28,7 @@ void GPIO_init(void){
 	delay(1); 	// allow time for clock to start
 
 	/// GPIOA
-    //Set GPIOA, PIN 5 as Output (MODER[11:10] = 01)
+    	//Set GPIOA, PIN 5 as Output (MODER[11:10] = 01)
 	GPIOA->MODER &= ~(1<<11); // clear bit 11
 	GPIOA->MODER |= (1<<10);  // set bit 10
 
