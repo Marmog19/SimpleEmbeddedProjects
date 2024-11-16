@@ -1,11 +1,12 @@
 #include <stdint.h>
 #include <stm32f4xx.h>
+#include <SysTickDelay.h>
 
 void GPIO_init(void);
-void delay(int);
 
 int main(void){
 	GPIO_init();
+	SysTick_Init();
 
     /* Loop forever */
 	while(1){
@@ -13,15 +14,15 @@ int main(void){
 		if (GPIOA->IDR & (1 << 9)) {
 			// check if the armed signals (buttons on pin 6 and 7) are not pressed (1)
 			if ((GPIOA->IDR & (1 << 7)) || (GPIOA->IDR & (1 << 6))) {
-				GPIOA->ODR |= (1<<4); // turns on LED (breadboard)
-				delay(50); // wait 10ms because of button bounce
+				GPIOA->ODR |= (1<<4); // turns on LED
+				SysTick_Delay10ms(1); // wait 10ms because of button bounce
 			}  else {
-				GPIOA->ODR &= ~(1<<4); // turns off LED (breadboard)
-				delay(50); // wait 10ms because of button bounce
+				GPIOA->ODR &= ~(1<<4); // turns off LED
+				SysTick_Delay10ms(1); // wait 10ms because of button bounce
 			}
 		} else {
-			GPIOA->ODR &= ~(1<<4); // turns off LED (breadboard)
-			delay(50); // wait 10ms because of button bounce
+			GPIOA->ODR &= ~(1<<4); // turns off LED
+			SysTick_Delay10ms(1); // wait 10ms because of button bounce
 		}
 	}
 }
@@ -30,10 +31,8 @@ void GPIO_init(void){
 	//Enable Clock Peripherals (GPIOA)
 	RCC->AHB1ENR |= (1<<0); //Enables GPIOA peripheral (bit 0)
 
-	delay(1); 	// allow time for clock to start (???)
-
 	/// OUTPUT
-	// LED breadboard
+	// LED
 	//Set GPIOA, PIN 4 as Output (MODER[9:8] = 01)
 	GPIOA->MODER &= ~(1<<9); // clear bit 9
 	GPIOA->MODER |= (1<<8); // set bit 8
@@ -64,12 +63,4 @@ void GPIO_init(void){
 	//Set GPIOA, PIN 7 as Pull-up (negative logic) (PUPDR[15:14] = 01)
 	GPIOA->PUPDR &= ~(1<<15); // clear bit 13
 	GPIOA->PUPDR |= (1<<14); // set bit 12
-}
-
-// 1000 = 2 seconds
-void delay(int d){
-	int i;
-	for(; d>0 ;d--){
-		for(i =0; i<2657;i++);
-	}
 }
