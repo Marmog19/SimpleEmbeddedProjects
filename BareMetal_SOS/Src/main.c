@@ -1,12 +1,14 @@
 #include <stdint.h>
 #include <stm32f4xx.h>
+#include <SysTickDelay.h>
+
 
 void GPIO_init(void);
-void delay(int);
 void SosSignal(void);
 
 int main(void){
 	GPIO_init();
+	SysTick_Init();
 
     /* Loop forever */
 	while(1){
@@ -25,8 +27,6 @@ void GPIO_init(void){
 	//Enable Clock Peripherals (GPIOA, GPIOC)
 	RCC->AHB1ENR |= (1<<0); //Enables GPIOA peripheral (bit 0)
 	RCC->AHB1ENR |= (1<<2); //Enables GPIOC peripheral (bit 2)
-
-	delay(1); 	// allow time for clock to start
 
 	/// LED
     	//Set GPIOA, PIN 5 as Output (MODER[11:10] = 01)
@@ -50,37 +50,29 @@ void GPIO_init(void){
 //    5 second delay between SOS
 void SosSignal(void) {
 	// S
-	GPIOA->ODR |= (1<<5); delay(250);
-	GPIOA->ODR &= ~(1<<5); delay(250);
-	GPIOA->ODR |= (1<<5); delay(250);
-	GPIOA->ODR &= ~(1<<5); delay(250);
-	GPIOA->ODR |= (1<<5); delay(250);
-	GPIOA->ODR &= ~(1<<5); delay(250);
+	GPIOA->ODR |= (1<<5); SysTick_Delay10ms(50);
+	GPIOA->ODR &= ~(1<<5); SysTick_Delay10ms(50);
+	GPIOA->ODR |= (1<<5); SysTick_Delay10ms(50);
+	GPIOA->ODR &= ~(1<<5); SysTick_Delay10ms(50);
+	GPIOA->ODR |= (1<<5); SysTick_Delay10ms(50);
+	GPIOA->ODR &= ~(1<<5); SysTick_Delay10ms(50);
 
 	// O
-	GPIOA->ODR |= (1<<5); delay(1000);
-	GPIOA->ODR &= ~(1<<5); delay(1000);
-	GPIOA->ODR |= (1<<5); delay(1000);
-	GPIOA->ODR &= ~(1<<5); delay(1000);
-	GPIOA->ODR |= (1<<5); delay(1000);
-	GPIOA->ODR &= ~(1<<5); delay(1000);
+	GPIOA->ODR |= (1<<5); SysTick_Delay10ms(200);
+	GPIOA->ODR &= ~(1<<5); SysTick_Delay10ms(200);
+	GPIOA->ODR |= (1<<5); SysTick_Delay10ms(200);
+	GPIOA->ODR &= ~(1<<5); SysTick_Delay10ms(200);
+	GPIOA->ODR |= (1<<5); SysTick_Delay10ms(200);
+	GPIOA->ODR &= ~(1<<5); SysTick_Delay10ms(200);
 
 	// S
-	GPIOA->ODR |= (1<<5); delay(250);
-	GPIOA->ODR &= ~(1<<5); delay(250);
-	GPIOA->ODR |= (1<<5); delay(250);
-	GPIOA->ODR &= ~(1<<5); delay(250);
-	GPIOA->ODR |= (1<<5); delay(250);
-	GPIOA->ODR &= ~(1<<5); delay(250);
+	GPIOA->ODR |= (1<<5); SysTick_Delay10ms(50);
+	GPIOA->ODR &= ~(1<<5); SysTick_Delay10ms(50);
+	GPIOA->ODR |= (1<<5); SysTick_Delay10ms(50);
+	GPIOA->ODR &= ~(1<<5); SysTick_Delay10ms(50);
+	GPIOA->ODR |= (1<<5); SysTick_Delay10ms(50);
+	GPIOA->ODR &= ~(1<<5); SysTick_Delay10ms(50);
 
 	// 5 sec pause
-	delay(2500);
-}
-
-// 1000 = 2 seconds
-void delay(int d){
-	int i;
-	for(; d>0 ;d--){
-		for(i =0; i<2657;i++);
-	}
+	SysTick_Delay10ms(500);
 }
