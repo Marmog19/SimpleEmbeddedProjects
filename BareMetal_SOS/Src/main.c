@@ -39,8 +39,8 @@ void GPIO_init(void){
 	GPIOC->MODER &= ~(1<<27); // clear bit 27
 	GPIOC->MODER &= ~(1<<26); // clear bit 26
 	//Set GPIOC, PIN 13 as Pull-up (negative logic) (PUPDR[27:26] = 01)
-	GPIOA->PUPDR &= ~(1<<27); // clear bit 27
-	GPIOA->PUPDR |= (1<<26); // set bit 26
+	GPIOC->PUPDR &= ~(1<<27); // clear bit 27
+	GPIOC->PUPDR |= (1<<26); // set bit 26
 }
 
 // Pressing the button starts SOS (Green LED flashes SOS).
