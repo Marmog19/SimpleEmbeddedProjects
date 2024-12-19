@@ -1,0 +1,4 @@
+../Drivers/CMSIS/Include/core_cm4.h:1684:22:__NVIC_EnableIRQ	16	static,ignoring_inline_asm
+../Drivers/CMSIS/Include/core_cm4.h:1814:22:__NVIC_SetPriority	16	static
+../Core/Src/InterruptHandler.c:7:6:InterruptInit	8	static
+../Core/Src/InterruptHandler.c:27:6:EXTI4_IRQHandler	4	static
